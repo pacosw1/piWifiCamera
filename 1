@@ -1,0 +1,29 @@
+import socketio
+import time
+
+client = socketio.Client()
+
+connection_refused = True
+client.connect('http://localhost:4000')
+while connection_refused:
+    try:
+        client.connect('http://localhost:4000')
+        connection_refused = False
+    except:
+        print("Connection failed. Retrying in 5s...")
+        time.sleep(5)
+
+
+
+print('sid: ', client.sid)
+
+@client.event
+def message(data):
+    print('Message has been received')
+
+@client.on('incoming data')
+def onIncomingData(data):
+    print('data received')
+
+
+client.emit("feed", {'feed': "test"})
