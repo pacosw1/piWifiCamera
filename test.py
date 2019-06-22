@@ -4,4 +4,4 @@ from picamera import PiCamera
 camera = PiCamera()
 print("Starting up")
 sleep(2)
-camera.capture("paloma.jpg")
+camera.capture("p.jpg")
