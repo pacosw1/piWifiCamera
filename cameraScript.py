@@ -1,6 +1,6 @@
 import socketio
-from config import startUp
-import time
+from config import startUp, setupStream, getFrame 
+from time import sleep
 
 client = startUp()
 unique_id="AKLMNF14832"
@@ -22,9 +22,13 @@ def onIncomingData(data):
 
 
 def runServer():
-    print("Loading feed")
-    time.sleep(1.5)
-    while True:
-        client.emit("feed", {"data": "feed", 'sid': client.sid, "_id": unique_id })
+    
+    fps = 10
+    print("Starting camera")
+    piCam = setupStream()
+    sleep(2)
 
+    while True:
+        client.emit("feed", {"frame": getFrame(piCam), 'sid': client.sid, "_id": unique_id })
+        sleep(1 / fps)
 runServer()

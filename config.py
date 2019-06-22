@@ -1,6 +1,8 @@
 import socketio
 import time
-serverURL = "http://ec2-18-224-16-97.us-east-2.compute.amazonaws.com:4000"
+import cv2
+import base64
+serverURL = "http://ec2-18-188-147-157.us-east-2.compute.amazonaws.com:4000"
 
 client = socketio.Client()
 def startUp():
@@ -13,4 +15,14 @@ def startUp():
         except:
             print("Connection lost. Attempting to reconnect in 5s")
             time.sleep(5);
-    
+
+def setupStream():
+    return cv2.VideoCapture(0)
+
+def getFrame(piCam):
+    okFrame, frame = piCam.read()
+    if okFrame:
+        okImage, image = cv2.imencode('.jpg', frame)
+        if okImage:
+            decoded = base64.b64encode(image)
+    return decoded
